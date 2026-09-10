@@ -16,7 +16,7 @@ let obj:{
     age:number;
 }={
     name:"victor",
-    age:23
+    age:25
 
 
 
@@ -186,3 +186,21 @@ class Bank{
 const bal=new Bank()
 bal.deposit(500)
 console.log(bal.getbal())
+
+
+const users = [
+    { id: 1, name: "John", age: 25 },
+    { id: 2, name: "Alice", age: 22 },
+    { id: 3, name: "Bob", age: 30 }
+];
+const reso=users.map(user=>{
+    if (user.id===2){
+        return{
+            ...user,
+            age:26
+        }
+
+    }
+    return user;
+})
+console.log(reso)
