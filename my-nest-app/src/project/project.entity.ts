@@ -3,11 +3,13 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  OneToMany,
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
 
 import { User } from '../user/user.entity';
+import { Task } from '../task/task.entity';
 
 @Entity('projects')
 export class Project {
@@ -30,5 +32,7 @@ export class Project {
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
   user: User;
-    tasks: any;
+   
+    @OneToMany(() => Task, task => task.project)
+   tasks: Task[];
 }

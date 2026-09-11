@@ -1,9 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/UpdateUser.dto';
+
 @Injectable()
 export class UserService {
 
@@ -11,30 +17,53 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
-   getUser(){
-    return this.userRepository.find()
- }
- getUserbyid(id :number){
 
-  return this.userRepository.findOneBy({
-    id: id,
-  });
-}
-createUser(data: CreateUserDto) {
-  const user = this.userRepository.create(data);
+  // GET ALL USERS
+  getUsers() {
+    return this.userRepository.find();
+  }
 
-  return this.userRepository.save(user);
+  // GET ONE USER
+  async getUserById(id: number) {
+    const user = await this.userRepository.findOneBy({ id });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
+  }
+
+  // CREATE USER
+  createUser(data: CreateUserDto) {
+    const user = this.userRepository.create(data);
+
+    return this.userRepository.save(user);
+  }
+
+  // UPDATE USER
+  async updateUser(id: number, data: UpdateUserDto) {
+    const result = await this.userRepository.update(id, data);
+
+    if (result.affected === 0) {
+      throw new NotFoundException('User not found');
+    }
+
+    return {
+      message: 'User updated successfully',
+    };
+  }
+
+  // DELETE USER
+  async deleteUser(id: number) {
+    const result = await this.userRepository.delete(id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException('User not found');
+    }
+
+    return {
+      message: 'User deleted successfully',
+    };
+  }
 }
-Updateuser(id:number,data:UpdateUserDto){
-    return this.userRepository.update(id,data)
-}
-updateUser(id: number, data: UpdateUserDto) {
-  return this.userRepository.update(id, data);
-}
-Update(id: number, data: UpdateUserDto) {
-  return this.userRepository.update(id, data);
-}
-deleteUser(id: number) {
-  return this.userRepository.delete(id);
-}
- }
