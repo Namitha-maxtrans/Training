@@ -23,10 +23,7 @@ let obj:{
 }
 console.log(obj)
 //
-function summ(a:number,b:number):number{
-    return a+b
-}
-console.log(summ(2,3))
+
 //interface:
 interface student{
     id:number;

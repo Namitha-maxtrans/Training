@@ -6,14 +6,17 @@ import {
   Delete,
   Param,
   Body,
+  UseGuards,
 } from '@nestjs/common';
 
 import { ProjectService } from './project.service';
 import { CreateProjectDto } from './sto/createproject';
 import { UpdateProjectDto } from './sto/updateproject';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 
 @Controller('project')
+@UseGuards(JwtAuthGuard)
 export class ProjectController {
 
   constructor(
